@@ -10,41 +10,81 @@
     <meta name="browsermode" content="application">
     <title></title>
     <style>
-        .plane {
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin: -50px 0 0 -50px;
-            /*opacity: .3;*/
-            -webkit-transform-style: preserve-3d;
-        }
-
-        .plane.a {
-            /*-webkit-transform: perspective(400px) translate3d(0, 0, 50px) rotateX(30deg);*/
-            background: green;
-        }
-
-        .plane.b {
-            -webkit-transform: perspective(400px) translate3d(0, 0, 50px);
-            background: orangered;
-        }
-
         .content {
             position: absolute;
             top: 0;
             left: 0;
             bottom: 0;
             right: 0;
-            /*-webkit-perspective: 1400px;*/
+            -webkit-perspective: 1400px;
+        }
+
+        .plane {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -150px 0 0 -150px;
+            -webkit-transform-style: preserve-3d;
+            background: rgba(100, 100, 100, 0.3);
+            opacity: 1;
+        }
+
+        .inner-plane {
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            color: white;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            font-size: 40px;
+            margin: -50px 0 0 -50px;
+        }
+
+        .inner-plane.a {
+            background: orangered;
+            -webkit-transform: translate3d(0, 0, 50px);
+        }
+
+        .inner-plane.b {
+            background: gold;
+            -webkit-transform: translate3d(0, 50px, 0) rotate3d(1, 0, 0, -90deg);
+        }
+
+        .inner-plane.c {
+            background: black;
+            -webkit-transform: translate3d(0, 0, -50px) rotate3d(1, 0, 0, 180deg);
+        }
+
+        .inner-plane.d {
+            background: darkmagenta;
+            -webkit-transform: translate3d(0, -50px, 0) rotate3d(1, 0, 0, 90deg);
+        }
+
+        .inner-plane.e {
+            background: red;
+            -webkit-transform: translate3d(-50px, 0, 0) rotate3d(0, 1, 0, -90deg);
+        }
+
+        .inner-plane.f {
+            background: blue;
+            -webkit-transform: translate3d(50px, 0, 0) rotate3d(0, 1, 0, 90deg);
         }
     </style>
 </head>
 <body>
 <div class="content">
-    <div class="plane a">1</div>
-    <!--<div class="plane b"></div>-->
+    <div class="plane a">
+        <div class="inner-plane a">1</div>
+        <div class="inner-plane b">2</div>
+        <div class="inner-plane c">3</div>
+        <div class="inner-plane d">4</div>
+        <div class="inner-plane e">5</div>
+        <div class="inner-plane f">6</div>
+    </div>
 </div>
 <script src="../js/basic.js"></script>
 <script src="../js/3d-css.js"></script>
@@ -58,26 +98,20 @@
             [0, 0, 1, 0],
             [0, 0, 0, 1]
         ];
-//        content.onDrag( {
-//
-//            onMove : function ( arg ) {
-//                init = _3d.combine( init, _3d.rotate3dM( arg.dy, -arg.dx, 0, Math.sqrt( arg.dx * arg.dx + arg.dy * arg.dy ) ) );
-//                a.css( {
-//                    "-webkit-transform" : "matrix3d(" + init.matrixStringify() + ")"
-//                } );
-//            },
-//            onEnd : function () {
-//                content.isTouching = false;
-//            }
-//
-//        } );
+        content.onDrag( {
 
-//        util.doAnimate( 1000000, function ( process ) {
-//            init = _3d.combine( init, _3d.rotate3dM( 0, 1, 0, 360 * process ) );
-//            a.css( {
-//                "-webkit-transform" : "matrix3d(" + init.matrixStringify() + ")"
-//            } );
-//        } );
+            onMove : function ( arg ) {
+                init = _3d.combine( init, _3d.rotate3dM( arg.dy, -arg.dx, 0, Math.sqrt( arg.dx * arg.dx + arg.dy * arg.dy ) ) );
+                a.css( {
+                    "-webkit-transform" : "matrix3d(" + init.matrixStringify() + ")"
+                } );
+            },
+            onEnd : function () {
+                content.isTouching = false;
+            }
+
+        } );
+
 
     })();
 </script>

@@ -24,6 +24,12 @@
     function rotate3dM( x, y, z, a ) {
         var cos = Math.cos, sin = Math.sin;
         a = a * Math.PI / 180;
+
+        var r = Math.sqrt( x * x + y * y + z * z );
+        x /= r;
+        y /= r;
+        z /= r;
+
         return [
             [1 + (1 - cos( a )) * ( x * x - 1 ), z * sin( a ) + x * y * (1 - cos( a )), -y * sin( a ) + x * z * (1 - cos( a )), 0],
             [-z * sin( a ) + x * y * (1 - cos( a )), 1 + (1 - cos( a )) * (y * y - 1), x * sin( a ) + y * z * (1 - cos( a )), 0],
