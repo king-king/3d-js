@@ -18,10 +18,11 @@
             left: 50%;
             margin: -50px 0 0 -50px;
             opacity: .3;
+            -webkit-transform-style: preserve-3d;
         }
 
         .plane.a {
-            -webkit-transform: perspective(400px) translate3d(0, 0, 50px) rotate3d(-1, -1, 0, 30deg);
+            -webkit-transform: perspective(400px) translate3d(0, 0, 50px) rotateX(30deg);
             background: green;
         }
 
@@ -42,13 +43,23 @@
 <body>
 <div class="content">
     <div class="plane a"></div>
-    <!--<div class="plane b"></div>-->
+    <div class="plane b"></div>
 </div>
 <script src="../js/basic.js"></script>
 <script>
     (function () {
         var content = document.querySelector( ".content" );
         var a = document.querySelector( ".plane.a" );
+        content.onDrag( {
+
+            onMove : function ( arg ) {
+                a.css( {
+                    "-webkit-transform" : "perspective(400px) translate3d(0,0,50px) rotate3d(" + arg.dy + ",-" + arg.dx + ",0," +
+                    Math.sqrt( arg.dx * arg.dx + arg.dy * arg.dy ) + ")"
+                } );
+                console.log( "ok" )
+            }
+        } )
 
     })();
 </script>
