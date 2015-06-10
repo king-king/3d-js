@@ -56,6 +56,7 @@
             if ( el.isTouching == true ) {
                 return;
             }
+            var startTime = (new Date()).getTime();
             arg.onStart && arg.onStart();
             el.isTouching = true;
             start.preventDefault();
@@ -91,7 +92,9 @@
                 if ( isMoving ) {
                     arg.onEnd && arg.onEnd( {
                         dx : lastx - spx,
-                        dy : lasty - spy
+                        dy : lasty - spy,
+                        speedx : (lastx - spx) / ((new Date()).getTime() - startTime),
+                        speedy : ( lasty - spy) / ((new Date()).getTime() - startTime)
                     } );
                 }
                 else {

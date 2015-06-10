@@ -16,7 +16,7 @@
             left: 0;
             bottom: 0;
             right: 0;
-            -webkit-perspective: 1400px;
+            -webkit-perspective: 400px;
         }
 
         .plane {
@@ -28,7 +28,7 @@
             margin: -150px 0 0 -150px;
             -webkit-transform-style: preserve-3d;
             background: rgba(100, 100, 100, 0.3);
-            opacity: 1;
+            opacity: .3;
         }
 
         .inner-plane {
@@ -98,16 +98,20 @@
             [0, 0, 1, 0],
             [0, 0, 0, 1]
         ];
+        var dx, dy;
         content.onDrag( {
 
             onMove : function ( arg ) {
-                init = _3d.combine( init, _3d.rotate3dM( arg.dy, -arg.dx, 0, Math.sqrt( arg.dx * arg.dx + arg.dy * arg.dy ) ) );
+                dx = arg.dx;
+                dy = arg.dy;
+                init = _3d.combine( init, _3d.rotate3dM( arg.dy, -arg.dx, 0, Math.sqrt( dx * dx + dy * dy ) ) );
                 a.css( {
                     "-webkit-transform" : "matrix3d(" + init.matrixStringify() + ")"
                 } );
             },
-            onEnd : function () {
+            onEnd : function ( arg ) {
                 content.isTouching = false;
+                console.log( arg.speedx, arg.speedy )
             }
 
         } );
