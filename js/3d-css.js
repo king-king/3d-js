@@ -53,7 +53,7 @@
         return nmatrix.join();
     };
 
-    function combin() {
+    function combine() {
         var result = [
             [1, 0, 0, 0],
             [0, 1, 0, 0],
@@ -85,7 +85,8 @@
         translate3dM : translate3dM,
         rotate3dM : rotate3dM,
         scale3dM : scale3dM,
-        mul : mul
+        mul : mul,
+        combine : combine
     }
 
 })();
