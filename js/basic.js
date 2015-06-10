@@ -134,6 +134,7 @@
         }
     };
 
+    // 在指定的时间内做动画，到时就停止
     function doAnimate( duration, keyframe, callback ) {
         var st = (new Date()).getTime();//  ms
         function animate() {
@@ -147,6 +148,18 @@
             else {
                 callback();
             }
+        }
+
+        animate();
+    }
+
+    // 持续做动画，除非
+    function requestAnimate( keyframe ) {
+        function animate() {
+            var isGoOn = keyframe();
+            isGoOn && setTimeout( function () {
+                animate();
+            }, 1000 / 60 );
         }
 
         animate();
@@ -319,6 +332,7 @@
         transition : transition,
         insertCSSRules : insertCSSRules,
         createElement : createElement,
-        makeBanner : makeBanner
+        makeBanner : makeBanner,
+        requestAnimate : requestAnimate
     }
 })();

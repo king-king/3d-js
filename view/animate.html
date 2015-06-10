@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .target {
+            width: 100px;
+            height: 100px;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="target"></div>
+<script src="../js/basic.js"></script>
+<script>
+    (function () {
+
+        var target = document.querySelector( ".target" );
+        var x = 0;
+        util.requestAnimate( function () {
+            target.css( {
+                "-webkit-transform" : "translate3d(" + (x += 10) + "px,0,0)"
+            } );
+            return x < 300;
+        } );
+
+    })();
+</script>
+</body>
+</html>
