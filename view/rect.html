@@ -16,7 +16,7 @@
             left: 0;
             bottom: 0;
             right: 0;
-            -webkit-perspective: 400px;
+            /*-webkit-perspective: 1800px;*/
         }
 
         .plane {
@@ -99,8 +99,12 @@
             [0, 0, 0, 1]
         ];
         var dx, dy;
+        var animateHandler;
         content.onDrag( {
-
+            onStart : function () {
+                console.log( animateHandler )
+                animateHandler && animateHandler.stop();
+            },
             onMove : function ( arg ) {
                 dx = arg.dx;
                 dy = arg.dy;
@@ -111,7 +115,17 @@
             },
             onEnd : function ( arg ) {
                 content.isTouching = false;
-                console.log( arg.speedx, arg.speedy )
+                var sx = arg.speedx * 10, sy = arg.speedy * 10;
+                animateHandler = util.requestAnimate( function () {
+                    sx *= 0.95;
+                    sy *= 0.95;
+                    var d = Math.sqrt( sx * sx + sy * sy );
+                    init = _3d.combine( init, _3d.rotate3dM( sy, -sx, 0, d ) );
+                    a.css( {
+                        "-webkit-transform" : "matrix3d(" + init.matrixStringify() + ")"
+                    } );
+                    return d > 0.01;
+                } );
             }
 
         } );

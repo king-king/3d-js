@@ -155,14 +155,24 @@
 
     // 持续做动画，除非
     function requestAnimate( keyframe ) {
+        var timeID;
+
         function animate() {
-            var isGoOn = keyframe();
-            isGoOn && setTimeout( function () {
-                animate();
-            }, 1000 / 60 );
+            clearTimeout( timeID );
+            if ( keyframe() ) {
+                timeID = setTimeout( function () {
+                    animate();
+                }, 1000 / 60 );
+            }
         }
 
         animate();
+
+        return {
+            stop : function () {
+                clearTimeout( timeID );
+            }
+        }
     }
 
     function transition( el, style, callback ) {
