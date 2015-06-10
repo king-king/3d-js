@@ -25,7 +25,8 @@
         var cos = Math.cos, sin = Math.sin;
         a = a * Math.PI / 180;
         return [
-            [1 + (1 - cos( a ))( x * x - 1 ), z * sin( a ) + x * y * (1 - cos( a )), -y * sin( a ) + x * z * (1 - cos( a )), 0],
+            [1 + (1 - cos( a ))( x * x - 1 ),
+                z * sin( a ) + x * y * (1 - cos( a )), -y * sin( a ) + x * z * (1 - cos( a )), 0],
             [-z * sin( a ) + x * y * (1 - cos( a )), 1 + (1 - cos( a )) * (y * y - 1), x * sin( a ) + y * z * (1 - cos( a )), 0],
             [y * sin( a ) + x * z * (1 - cos( a )), -x * sin( a ) + y * z * (1 - cos( a )), 1 + (1 - cos( a )) * (z * z - 1), 0],
             [0, 0, 0, 1]
@@ -40,6 +41,19 @@
             [0, 0, 0, 1]
         ]
     }
+
+    Array.prototype.matrixStringify = function () {
+        var marix = this;
+        var nmatrix = [];
+        for ( var c = 0; c < marix.length; c++ ) {
+            nmatrix[c] = [];
+            for ( var r = 0; r < marix[c].length; r++ ) {
+                nmatrix[c][r] = marix[r][c];
+            }
+        }
+        return nmatrix.join();
+    };
+
 
     window._3d = {
         perspectiveM : perspectiveM,
