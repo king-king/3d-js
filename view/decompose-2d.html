@@ -54,7 +54,6 @@
     var matrix = combine( translate( 100, 100 ), rotate( 30 ), scale( 1.5, 1.5 ) );
 
     matrix = origin( matrix, 100, 50 );
-    console.table( matrix );
     var v = decompose( matrix, [200, 0, 1] );
     point.css( {
         "-webkit-transform" : "translate3d(" + (v[0] - 2) + "px," + (v[1] - 2) + "px,0)"
