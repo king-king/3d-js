@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .target {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            opacity: .3;
+        }
+
+        .a {
+            background: orange;
+            -webkit-transform: translate3d(200px, 200px, 0) rotateZ(30deg) scale(1.5);
+            -webkit-transform-origin: 0 0 0;
+        }
+
+        .b {
+            background: green;
+            /*-webkit-transform-origin: 0 0 0;*/
+        }
+    </style>
+</head>
+<body>
+<div class="target a"></div>
+<div class="target b"></div>
+<script src="../js/basic.js"></script>
+<script src="../js/3d-css.js"></script>
+<script>
+    (function () {
+
+        var b = document.querySelector( ".b" );
+
+        var m = _3d.combine( _3d.translate3dM( 200, 200, 0 ), _3d.rotate3dM( 0, 0, -1, 30 ), _3d.scale3dM( 1.5, 1.5, 1.5 ) )
+
+        m = _3d.origin3d( m, -50, -50, 0 );
+
+        b.css( {
+            "-webkit-transform" : "matrix3d(" + m.matrixStringify() + ")"
+        } )
+
+    })();
+</script>
+</body>
+</html>
