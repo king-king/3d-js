@@ -96,6 +96,20 @@
         return re;
     }
 
+    // matrix:4*4,vector:1*4
+    function decompose3d( matrix, vector ) {
+        return [
+            matrix[0][0] * vector[0] + matrix[0][1] * vector[1] + matrix[0][2] * vector[2] + matrix[0][3] * vector[3],
+            matrix[1][0] * vector[0] + matrix[1][1] * vector[1] + matrix[1][2] * vector[2] + matrix[1][3] * vector[3],
+            matrix[2][0] * vector[0] + matrix[2][1] * vector[1] + matrix[2][2] * vector[2] + matrix[2][3] * vector[3],
+            1
+        ]
+    }
+
+    function origin3d( transformation, x, y, z ) {
+        return combine( translate3dM( x, y, z ), transformation, translate3dM( -x, -y, -z ) );
+    }
+
     window._3d = {
         eye : eye,
         perspectiveM : perspectiveM,
@@ -103,7 +117,9 @@
         rotate3dM : rotate3dM,
         scale3dM : scale3dM,
         mul : mul,
-        combine : combine
+        combine : combine,
+        decompose3d : decompose3d,
+        origin3d : origin3d
     }
 
 })();

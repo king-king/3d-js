@@ -12,58 +12,48 @@
             height: 100px;
             opacity: 0.5;
             background: green;
-            -webkit-transform: translate3d(100px, 100px, 0) rotate(30deg) scale(1.3);
+            -webkit-transform: translate3d(100px, 100px, 0) rotate3d(1, 1, 0, 30deg) scale(1.3);
+            /*-webkit-transform-origin: 0 0;*/
         }
 
-        .b {
+        .p {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100px;
-            height: 100px;
-            opacity: 0.5;
-            background: blue;
-        }
-
-        .c {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100px;
-            height: 100px;
-            opacity: 0.5;
-            background: darkorange;
+            width: 6px;
+            height: 6px;
+            border-radius: 6px;
+            background: black;
         }
     </style>
 </head>
 <body>
 <div class="a"></div>
-<div class="b"></div>
-<div class="c"></div>
+<div class="p"></div>
 <script src="../js/basic.js"></script>
 <script src="../js/3d-css.js"></script>
 <script>
     (function () {
-        var querySelector = document.querySelector.bind( document );
-        var b = querySelector( ".b" );
-        var combine = _3d.combine, translate3d = _3d.translate3dM, rotate3d = _3d.rotate3dM, scale3d = _3d.scale3dM;
-        var cur = _3d.eye();
+        // api
+        var combine = _3d.combine,
+                translate3d = _3d.translate3dM,
+                rotate3d = _3d.rotate3dM,
+                decompose3d = _3d.decompose3d,
+                origin3d = _3d.origin3d,
+                scale3d = _3d.scale3dM;
 
-        cur = combine( cur, translate3d( 100, 100, 0 ) );
-        cur = combine( cur, rotate3d( 0, 0, -1, 30 ) );
-        cur = combine( cur, scale3d( 1.3, 1.3, 1.3 ) );
-        var x = cur[0][0] + cur[1][0] + cur[1][0];
-        var y = cur[0][1] + cur[1][1] + cur[1][1];
-        console.log( x, y );
-        console.table( cur );
-        b.css( {
-            "-webkit-transform" : "matrix3d(" + cur.matrixStringify() + ")"
-        } );
+        // dom
+        var querySelector = document.querySelector.bind( document ),
+                b = querySelector( ".b" ),
+                p = querySelector( ".p" );
 
-        var c = querySelector( ".c" );
-        c.css( {
-            "-webkit-transform" : "translate3d(" + x + "px," + y + "px,0)"
-        } );
+
+        var matrix = combine( translate3d( 100, 100, 0 ), rotate3d( 1, 1, 0, 30 ), scale3d( 1.3, 1.3, 1.3 ) );
+        matrix = origin3d( matrix, 50, 50, 0 );
+        var v = decompose3d( matrix, [0, 0, 0, 1] );
+        p.css( {
+            "-webkit-transform" : "translate3d(" + (v[0] - 3) + "px," + (v[1] - 3) + "px," + v[2] + "px)"
+        } )
 
     })();
 </script>
