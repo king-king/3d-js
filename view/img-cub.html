@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta name="mobileoptimized" content="0"/>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="browsermode" content="application">
+    <title></title>
+    <style>
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-color: rgba(3, 3, 3, 0.3);
+            /*-webkit-perspective: 1800px;*/
+        }
+
+        .plane {
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -150px 0 0 -150px;
+            -webkit-transform-style: preserve-3d;
+            background-color: rgba(100, 100, 100, 0);
+            opacity: .5;
+        }
+
+        .inner-plane {
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            color: white;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            font-size: 40px;
+            margin: -50px 0 0 -50px;
+        }
+
+        .inner-plane.a {
+            background: rgba(3, 3, 3, 0.5) url("img/1.png") no-repeat;
+            background-size: cover;
+            -webkit-transform: translate3d(0, 0, 50px);
+        }
+
+        .inner-plane.b {
+            background: rgba(3, 3, 3, 0.5) url("img/2.png") no-repeat;
+            background-size: cover;
+            -webkit-transform: translate3d(0, 50px, 0) rotate3d(1, 0, 0, -90deg);
+        }
+
+        .inner-plane.c {
+            background: rgba(3, 3, 3, 0.5) url("img/3.png") no-repeat;
+            background-size: cover;
+            -webkit-transform: translate3d(0, 0, -50px) rotate3d(1, 0, 0, 180deg);
+        }
+
+        .inner-plane.d {
+            background: rgba(3, 3, 3, 0.5) url("img/4.png") no-repeat;
+            background-size: cover;
+            -webkit-transform: translate3d(0, -50px, 0) rotate3d(1, 0, 0, 90deg);
+        }
+
+        .inner-plane.e {
+            background: rgba(3, 3, 3, 0.5) url("img/5.png") no-repeat;
+            background-size: cover;
+            -webkit-transform: translate3d(-50px, 0, 0) rotate3d(0, 1, 0, -90deg);
+        }
+
+        .inner-plane.f {
+            background: rgba(3, 3, 3, 0.5) url("img/6.png") no-repeat;
+            background-size: cover;
+            -webkit-transform: translate3d(50px, 0, 0) rotate3d(0, 1, 0, 90deg);
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="plane a">
+        <div class="inner-plane a"></div>
+        <div class="inner-plane b"></div>
+        <div class="inner-plane c"></div>
+        <div class="inner-plane d"></div>
+        <div class="inner-plane e"></div>
+        <div class="inner-plane f"></div>
+    </div>
+</div>
+<script src="../js/basic.js"></script>
+<script src="../js/3d-css.js"></script>
+<script>
+    (function () {
+        var content = document.querySelector( ".content" );
+        var a = document.querySelector( ".plane.a" );
+        var init = [
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ];
+        var dx, dy;
+        var animateHandler;
+        content.onDrag( {
+            onStart : function () {
+                animateHandler && animateHandler.stop();
+            },
+            onMove : function ( arg ) {
+                dx = arg.dx;
+                dy = arg.dy;
+                init = _3d.combine( init, _3d.rotate3dM( arg.dy, -arg.dx, 0, Math.sqrt( dx * dx + dy * dy ) ) );
+                a.css( {
+                    "-webkit-transform" : "matrix3d(" + init.matrixStringify() + ")"
+                } );
+            },
+            onEnd : function ( arg ) {
+                content.isTouching = false;
+                var sx = arg.speedx * 10, sy = arg.speedy * 10;
+                animateHandler = util.requestAnimate( function () {
+                    sx *= 0.95;
+                    sy *= 0.95;
+                    var d = Math.sqrt( sx * sx + sy * sy );
+                    init = _3d.combine( init, _3d.rotate3dM( sy, -sx, 0, d ) );
+                    a.css( {
+                        "-webkit-transform" : "matrix3d(" + init.matrixStringify() + ")"
+                    } );
+                    return d > 0.01;
+                } );
+            }
+
+        } );
+
+
+    })();
+</script>
+</body>
+</html>
