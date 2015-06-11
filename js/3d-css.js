@@ -3,6 +3,16 @@
  */
 (function () {
 
+    function eye() {
+        // 模仿matlab中的eye命令，创建一个单位矩阵
+        return [
+            [1, 0, 0, 0],
+            [0, 1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ]
+    }
+
     function translate3dM( x, y, z ) {
         return [
             [1, 0, 0, x],
@@ -87,6 +97,7 @@
     }
 
     window._3d = {
+        eye : eye,
         perspectiveM : perspectiveM,
         translate3dM : translate3dM,
         rotate3dM : rotate3dM,
