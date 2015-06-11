@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        div {
+            width: 200px;
+            height: 100px;
+            position: absolute;
+            opacity: .3;
+        }
+
+        .a {
+            background: green;
+            -webkit-transform: translate3d(100px, 100px, 0) rotate(30deg) scale(1.5);
+            /*-webkit-transform-origin: 0 0;*/
+        }
+
+        .b {
+            background: coral;
+        }
+
+        .point {
+            width: 4px;
+            height: 4px;
+            border-radius: 4px;
+            background: black;
+            position: absolute;
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+<div class="a"></div>
+<!--<div class="b"></div>-->
+<div class="point"></div>
+<script src="../js/2d-css.js"></script>
+<script>
+    var scale = _2d.scale,
+            translate = _2d.translate,
+            rotate = _2d.rotate,
+            transform = _2d.transform,
+            origin = _2d.origin,
+            combine = _2d.combine;
+    var querySelector = document.querySelector.bind( document );
+    var b = querySelector( ".b" ),
+            a = querySelector( ".a" ),
+            point = querySelector( ".point" );
+
+    var matrix = combine( translate( 100, 100 ), rotate( 30 ), scale( 1.5, 1.5 ) );
+
+    matrix = origin( matrix, 100, 50 );
+    console.table( matrix );
+
+    transform( point, matrix );
+
+    //    transform( b, cur );
+
+</script>
+</body>
+</html>
