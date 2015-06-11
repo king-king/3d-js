@@ -72,6 +72,14 @@
         return combine( translate( x, y ), transformation, translate( -x, -y ) );
     }
 
+    function decompose( matrix, vector ) {
+        return [
+            matrix[0][0] * vector[0] + matrix[0][1] * vector[1] + matrix[0][2] * vector[2],
+            matrix[1][0] * vector[0] + matrix[1][1] * vector[1] + matrix[1][2] * vector[2],
+            1
+        ]
+    }
+
     window._2d = {
         eye : eye,
         rotate : rotate,
@@ -79,7 +87,8 @@
         scale : scale,
         transform : transform,
         combine : combine,
-        origin : origin
+        origin : origin,
+        decompose : decompose
     }
 
 })();

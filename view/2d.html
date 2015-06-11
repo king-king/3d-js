@@ -36,6 +36,7 @@
 <div class="a"></div>
 <!--<div class="b"></div>-->
 <div class="point"></div>
+<script src="../js/basic.js"></script>
 <script src="../js/2d-css.js"></script>
 <script>
     var scale = _2d.scale,
@@ -43,6 +44,7 @@
             rotate = _2d.rotate,
             transform = _2d.transform,
             origin = _2d.origin,
+            decompose = _2d.decompose,
             combine = _2d.combine;
     var querySelector = document.querySelector.bind( document );
     var b = querySelector( ".b" ),
@@ -53,10 +55,10 @@
 
     matrix = origin( matrix, 100, 50 );
     console.table( matrix );
-
-    transform( point, matrix );
-
-    //    transform( b, cur );
+    var v = decompose( matrix, [200, 0, 1] );
+    point.css( {
+        "-webkit-transform" : "translate3d(" + (v[0] - 2) + "px," + (v[1] - 2) + "px,0)"
+    } )
 
 </script>
 </body>
