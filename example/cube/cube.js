@@ -62,9 +62,9 @@ function initCube() {
 
 function rotateCube( t_matrix ) {
     // x轴和y轴
-    aixsY = _3d.mul( aixsY , t_matrix );
-    aixsX = _3d.mul( aixsX , t_matrix );
-    aixsZ = _3d.mul( aixsZ , t_matrix );
+    Axis.y = _3d.mul( Axis.y , t_matrix );
+    Axis.x = _3d.mul( Axis.x , t_matrix );
+    Axis.z = _3d.mul( Axis.z , t_matrix );
     loopArray( Blocks , function ( block ) {
         block.matrix = _3d.combine( t_matrix , block.matrix );
         block.style.transform = "matrix3d(" + _3d.origin3d( block.matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")";

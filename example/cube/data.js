@@ -9,11 +9,14 @@ var querySelector = document.querySelector.bind( document );
 var cubeWrapper = querySelector( ".cube-wrapper" );
 
 // data
-var aixsX = [ 1 , 0 , 0 , 1 ];
-var aixsY = [ 0 , 1 , 0 , 1 ];
-var aixsZ = [ 0 , 0 , 1 , 1 ];
+var Axis = {
+    x : [ 1 , 0 , 0 , 1 ] ,
+    y : [ 0 , 1 , 0 , 1 ] ,
+    z : [ 0 , 0 , 1 , 1 ]
+};
 
 var Blocks = [];
+
 var initPos = [
     [ [ -150 , -150 ] , [ -50 , -150 ] , [ 50 , -150 ] ] ,
     [ [ -150 , -50 ] , [ -50 , -50 ] , [ 50 , -50 ] ] ,
