@@ -61,7 +61,7 @@ function initCube() {
 }
 
 function rotateCube( t_matrix ) {
-    // x轴和y轴
+    // x轴和y轴z轴
     Axis.y = _3d.mul( Axis.y , t_matrix );
     Axis.x = _3d.mul( Axis.x , t_matrix );
     Axis.z = _3d.mul( Axis.z , t_matrix );
