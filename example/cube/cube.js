@@ -28,8 +28,10 @@ function Block( type , row , col ) {
             }
         }
     } );
-    el.setAttribute( colDir.type , (colDir.posFlag == 1 ? col : floorNum - 1 - col) + "" );
-    el.setAttribute( rowDir.type , (rowDir.posFlag == 1 ? row : floorNum - 1 - row) + "" );
+    el[ colDir.type ] = colDir.posFlag == 1 ? col : floorNum - 1 - col;
+    el[ rowDir.type ] = rowDir.posFlag == 1 ? row : floorNum - 1 - row;
+    el.setAttribute( colDir.type , el[ colDir.type ] + "" );
+    el.setAttribute( rowDir.type , el[ rowDir.type ] + "" );
     return el;
 }
 
