@@ -37,13 +37,13 @@ var sixFaces = {
     } ,
     left : {
         transform : (function () {
-            return _3d.rotate3dM( 0 , 1 , 0 , -90 );
+            return _3d.rotate3dM( 0 , 1 , 0 , 90 );
         })() ,
         elements : []
     } ,
     right : {
         transform : (function () {
-            return _3d.rotate3dM( 0 , 1 , 0 , -270 );
+            return _3d.rotate3dM( 0 , 1 , 0 , 270 );
         })() ,
         elements : []
     } ,
@@ -53,7 +53,7 @@ var sixFaces = {
         })() ,
         elements : []
     } ,
-    top : {
+    up : {
         transform : (function () {
             return _3d.rotate3dM( 1 , 0 , 0 , -90 );
         })() ,
@@ -68,79 +68,67 @@ var sixFaces = {
 };
 
 var rotateData = {
-    'y' : {
+    y : {
         'face' : {
             front : {
                 rowOrCol : "row" ,
-                stackDir : 1 ,
-                readDir : 1
+                posFlag : 1
             } ,
             right : {
                 rowOrCol : "row" ,
-                stackDir : 1 ,
-                readDir : 1
+                posFlag : 1
             } ,
             back : {
                 rowOrCol : "row" ,
-                stackDir : 1 ,
-                readDir : 1
+                posFlag : 1
             } ,
             left : {
                 rowOrCol : "row" ,
-                stackDir : 1 ,
-                readDir : 1
+                posFlag : 1
             }
         } ,
         'up' : { 'face' : 'bottom' , 'rotateDegree' : 0 } ,
         'bottom' : { 'face' : 'up' , 'rotateDegree' : 2 }
     } ,
-    'x' : {
+    x : {
         'face' : {
             up : {
                 rowOrCol : "col" ,
-                stackDir : 1 ,
-                readDir : -1
+                posFlag : 1
             } ,
             back : {
                 rowOrCol : "col" ,
-                stackDir : -1 ,
-                readDir : -1
+                posFlag : -1
             } ,
             bottom : {
                 rowOrCol : "col" ,
-                stackDir : 1 ,
-                readDir : -1
+                posFlag : 1
             } ,
             front : {
                 rowOrCol : "col" ,
-                stackDir : 1 ,
-                readDir : -1
+                posFlag : 1
             }
         } ,
         'up' : { 'face' : 'right' , 'rotateDegree' : 0 } ,
         'bottom' : { 'face' : 'left' , 'rotateDegree' : 0 }
     } ,
-    'z' : {
+    z : {
         'face' : {
             up : {
                 rowOrCol : "row" ,
-                stackDir : 1 ,
-                readDir : 1
+                posFlag : 1
             } ,
             right : {
                 rowOrCol : "col" ,
-                stackDir : -1 ,
-                readDir : 1
+                posFlag : -1
             } ,
             bottom : {
                 rowOrCol : "row" ,
-                stackDir : -1 ,
-                readDir : -1
+                posFlag : -1
             } ,
             left : {
                 rowOrCol : "col" ,
-                stackDir : 1 ,
-                readDir : -1
+                posFlag : 1
             }
         } ,
         'up' : { 'face' : 'front' , 'rotateDegree' : 0 } ,

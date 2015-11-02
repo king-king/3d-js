@@ -16,6 +16,20 @@ function Block( type , row , col ) {
      *最复杂的一点，就是给每个block附上旋转的数据以及旋转的操作
      * 每个block只可能绕着两个轴来旋转，找出这两个点，给它附上一个独一无二的标记
      */
+    var rowDir = {} , colDir = {};
+    loopObj( rotateData , function ( axis , value ) {
+        if ( value.face[ type ] ) {
+            if ( value.face[ type ].rowOrCol == "row" ) {
+                rowDir.type = axis;
+                rowDir.posFlag = value.face[ type ].posFlag;
+            } else {
+                colDir.type = axis;
+                colDir.posFlag = value.face[ type ].posFlag;
+            }
+        }
+    } );
+    el.setAttribute( colDir.type , (colDir.posFlag == 1 ? col : floorNum - 1 - col) + "" );
+    el.setAttribute( rowDir.type , (rowDir.posFlag == 1 ? row : floorNum - 1 - row) + "" );
     return el;
 }
 
