@@ -19,7 +19,7 @@
         Drag( cubeWrapper , {
             onDrag : function ( dx , dy ) {
                 if ( dx || dy ) {
-                    var s = ( Math.abs( dx ) + Math.abs( dy )) / 4;
+                    var s = ( Math.abs( dx ) + Math.abs( dy )) / 3.5;
                     var t_matrix = _3d.rotate3dM( dy , -dx , 0 , s );
                     rotateCube( t_matrix );
                 }
