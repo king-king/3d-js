@@ -20,29 +20,61 @@ function Block ( type , row , col ) {
 	loopObj( rotateData , function ( axis , value ) {
 		if ( value.face[ type ] ) {
 			if ( value.face[ type ].rowOrCol == "row" ) {
-				rowDir.type = axis;
+				rowDir.axis = axis;
 				rowDir.posFlag = value.face[ type ].posFlag;
 			} else {
-				colDir.type = axis;
+				colDir.axis = axis;
 				colDir.posFlag = value.face[ type ].posFlag;
 			}
 		}
 	} );
-	el[ colDir.type ] = colDir.posFlag == 1 ? col : floorNum - 1 - col;
-	el[ rowDir.type ] = rowDir.posFlag == 1 ? row : floorNum - 1 - row;
-	el.setAttribute( colDir.type , el[ colDir.type ] + "" );
-	el.setAttribute( rowDir.type , el[ rowDir.type ] + "" );
+	el[ colDir.axis ] = colDir.posFlag == 1 ? col : floorNum - 1 - col;
+	el[ rowDir.axis ] = rowDir.posFlag == 1 ? row : floorNum - 1 - row;
+	el.setAttribute( colDir.axis , el[ colDir.axis ] + "" );
+	el.setAttribute( rowDir.axis , el[ rowDir.axis ] + "" );
 
 	Drag( el , {
-		onTap : function () {
-
+		onTap : function ( e ) {
+			e.stopPropagation();
+			return getBlocks( "y" , el.y );
 		} ,
-		onDrag : function () {
-
+		onDrag : function ( dx , dy , context ) {
+			/**
+			 * 先做个简单的测试，只是绕着y轴转。那么需要根据y轴这个信息以及转动当前block的
+			 * 的转动信息来确认能够转动的块（复数），这一步完成之后，还需要做的仅仅是确认旋
+			 * 转轴
+			 */
+			rotateFloor( "y" , el.y , -dx , context );
 		}
 	} );
 
 	return el;
+}
+
+function getBlocks ( axis , num ) {
+	var blocks = [];
+	// 先根据轴axis确认面是rotateData[ axis ].face
+	loopObj( rotateData[ axis ].face , function ( face ) {
+		loopArray( sixFaces[ face ].elements , function ( block ) {
+			if ( block[ axis ] == num ) {
+				blocks.push( block );
+			}
+		} );
+	} );
+	num == 0 && (blocks = blocks.concat( sixFaces[ rotateData[ axis ].bottom.face ].elements ));
+	num == floorNum - 1 && (blocks = blocks.concat( sixFaces[ rotateData[ axis ].up.face ].elements ));
+	return blocks;
+}
+
+function rotateFloor ( axis , num , degree , blocks ) {
+	!blocks && (blocks = getBlocks( axis , num ) );
+	loopArray( blocks , function ( block ) {
+		block.matrix = _3d.combine( _3d.rotate3dM( Axis[ axis ][ 0 ] , Axis[ axis ][ 1 ] , Axis[ axis ][ 2 ] , degree ) , block.matrix );
+		css( block , {
+			"-webkit-transform" : "matrix3d(" +
+			_3d.origin3d( block.matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")"
+		} );
+	} );
 }
 
 function initCube () {
@@ -70,11 +102,24 @@ function initCube () {
 	} );
 }
 
+function drawAxis () {
+	gc.clearRect( 0 , 0 , 600 , 600 );
+	gc.beginPath();
+	gc.moveTo( 300 , 300 );
+	gc.lineTo( -Axis.y[ 0 ] * 100 + 300 , -Axis.y[ 1 ] * 100 + 300 );
+	gc.moveTo( 300 , 300 );
+	gc.lineTo( -Axis.x[ 0 ] * 100 + 300 , -Axis.x[ 1 ] * 100 + 300 );
+	gc.moveTo( 300 , 300 );
+	gc.lineTo( -Axis.z[ 0 ] * 100 + 300 , -Axis.z[ 1 ] * 100 + 300 );
+	gc.stroke();
+}
+
 function rotateCube ( t_matrix ) {
 	// x轴和y轴z轴
 	Axis.y = _3d.mul( Axis.y , t_matrix );
 	Axis.x = _3d.mul( Axis.x , t_matrix );
 	Axis.z = _3d.mul( Axis.z , t_matrix );
+	//drawAxis();
 	loopArray( Blocks , function ( block ) {
 		block.matrix = _3d.combine( t_matrix , block.matrix );
 		block.style.transform = "matrix3d(" + _3d.origin3d( block.matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")";

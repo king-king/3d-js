@@ -61,11 +61,12 @@ function addEventListener ( el , type , listener , useCapture ) {
 function Drag ( el , listener ) {
 	var preX , preY;
 	addEventListener( el , "mousedown" , function ( de ) {
-		listener.onTap && listener.onTap( de );
+		var context;
+		listener.onTap && (context = listener.onTap( de ));
 		preX = de.pageX;
 		preY = de.pageY;
 		var mHandle = addEventListener( document , "mousemove" , function ( me ) {
-			listener.onDrag && listener.onDrag( me.pageX - preX , me.pageY - preY );
+			listener.onDrag && listener.onDrag( me.pageX - preX , me.pageY - preY , context );
 			preX = me.pageX;
 			preY = me.pageY;
 		} );
@@ -75,7 +76,7 @@ function Drag ( el , listener ) {
 			mHandle.remove();
 			uHandle.remove();
 		} );
-	} );
+	} , false );
 }
 
 function onDragV ( el , listener ) {

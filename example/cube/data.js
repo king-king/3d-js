@@ -7,6 +7,10 @@ var querySelector = document.querySelector.bind( document );
 
 // dom
 var cubeWrapper = querySelector( ".cube-wrapper" );
+var canvas = document.querySelector( "canvas" );
+var gc = canvas.getContext( "2d" );
+gc.lineWidth = 5;
+gc.strokeStyle = "black";
 
 // data
 var Axis = {
