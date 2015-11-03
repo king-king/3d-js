@@ -18,6 +18,9 @@
         initCube();
 
         Drag( cubeWrapper , {
+            onStart : function ( dx , dy ) {
+                console.log( dx , dy );
+            } ,
             onDrag : function ( dx , dy ) {
                 if ( dx || dy ) {
                     var s = ( Math.abs( dx ) + Math.abs( dy )) / 3.5;
