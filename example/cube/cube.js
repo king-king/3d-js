@@ -63,7 +63,8 @@ function Block( type , row , col ) {
                 } ,
                 onEnd : function () {
                     cubeWrapper.classList.remove( "lock" );
-                    //resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] )
+                    // todo 这里要进行另外一项复杂的颜色变换
+                    //  resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] )
                 }
             } );
 
