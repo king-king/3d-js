@@ -69,16 +69,38 @@ function Drag( el , listener ) {
             if ( isStart || Math.abs( me.pageX - preX ) + Math.abs( me.pageY - preY ) > 3 ) {
                 !isStart && listener.onStart && listener.onStart( me.pageX - preX , me.pageY - preY );
                 isStart = true;
-                listener.onDrag && listener.onDrag( me.pageX - preX , me.pageY - preY );
+                listener.onDrag && listener.onDrag( me.pageX - preX , me.pageY - preY , me.pageX - de.pageX , me.pageY - de.pageY );
                 preX = me.pageX;
                 preY = me.pageY;
             }
         } );
 
-        var uHandle = addEventListener( document , "mouseup" , function () {
-            listener.onUp && listener.onUp();
+        var uHandle = addEventListener( document , "mouseup" , function ( ue ) {
+            isStart && listener.onUp && listener.onUp( ue.pageX - de.pageX , ue.pageY = de.pageY );
             mHandle.remove();
             uHandle.remove();
         } );
     } , false );
+}
+
+
+function frameAnimate( arg ) {
+    var startTime = new Date();
+    var f = 50 / 3;
+    var d = arg.to - arg.from;
+    var percent;
+
+    function frame() {
+        var currentTime = new Date();
+        if ( currentTime - startTime >= arg.duration ) {
+            arg.onChange && arg.onChange( arg.to );
+            arg.onEnd && arg.onEnd();
+        } else {
+            percent = (currentTime - startTime ) / arg.duration;
+            arg.onChange && arg.onChange( arg.from + percent * d );
+            setTimeout( arguments.callee , f );
+        }
+    }
+
+    frame();
 }

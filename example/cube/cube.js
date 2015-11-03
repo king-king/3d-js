@@ -36,18 +36,38 @@ function Block( type , row , col ) {
     Drag( el , {
         onTap : function ( e ) {
             e.stopPropagation();
-            return getBlocks( "x" , el.x );
+            el.currentDegree = 0;
         } ,
         onStart : function ( dx , dy ) {
             // 在这里判断到底是围绕哪个轴旋转
             var col = Axis[ colDir.axis ] , row = Axis[ rowDir.axis ];
             el.currentAxis = Math.abs( col[ 0 ] * dx + col[ 1 ] * dy ) < Math.abs( row[ 0 ] * dx + row[ 1 ] * dy ) ? colDir.axis : rowDir.axis;
             // 先找缓存，如果缓存没有则getBlocks
-            !blocksCache( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] = getBlocks( el.currentAxis , el[ el.currentAxis ] ) );
+            !blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] && ( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] = getBlocks( el.currentAxis , el[ el.currentAxis ] ) );
         } ,
-        onDrag : function ( dx , dy ) {
-            var degree = dx * Axis[ el.currentAxis ][ 1 ] - dy * Axis[ el.currentAxis ][ 0 ];
-            rotateFloor( el.currentAxis , el[ el.currentAxis ] , -degree , blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] );
+        onDrag : function ( dx , dy , sx , sy ) {
+            var degree = -sx * Axis[ el.currentAxis ][ 1 ] + sy * Axis[ el.currentAxis ][ 0 ];
+            el.currentDegree = degree;
+            rotateFloor( el.currentAxis , el[ el.currentAxis ] , degree , blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] , true );
+        } ,
+        onUp : function () {
+            var toDegree = Math.round( el.currentDegree / 90 ) * 90;
+            console.log( el.currentDegree , toDegree );
+            cubeWrapper.classList.add( "lock" );
+            frameAnimate( {
+                from : el.currentDegree ,
+                to : toDegree ,
+                duration : 200 ,
+                onChange : function ( degree ) {
+                    rotateFloor( el.currentAxis , el[ el.currentAxis ] , degree , blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] , true );
+                } ,
+                onEnd : function () {
+                    cubeWrapper.classList.remove( "lock" );
+                    //resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] )
+                }
+            } );
+
+            resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] )
         }
     } );
 
@@ -69,14 +89,25 @@ function getBlocks( axis , num ) {
     return blocks;
 }
 
-function rotateFloor( axis , num , degree , blocks ) {
+function rotateFloor( axis , num , degree , blocks , nacc ) {
+    // nacc为true的时候表示不需要累加
     !blocks && (blocks = getBlocks( axis , num ) );
     loopArray( blocks , function ( block ) {
-        block.matrix = _3d.combine( _3d.rotate3dM( Axis[ axis ][ 0 ] , Axis[ axis ][ 1 ] , Axis[ axis ][ 2 ] , degree ) , block.matrix );
+        var matrix = _3d.combine( _3d.rotate3dM( Axis[ axis ][ 0 ] , Axis[ axis ][ 1 ] , Axis[ axis ][ 2 ] , degree ) , block.matrix );
+        !nacc && (block.matrix = matrix);
+        css( block , {
+            "-webkit-transform" : "matrix3d(" +
+            _3d.origin3d( matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")"
+        } );
+    } );
+}
+
+function resetPos( blocks ) {
+    loopArray( blocks , function ( block ) {
         css( block , {
             "-webkit-transform" : "matrix3d(" +
             _3d.origin3d( block.matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")"
-        } );
+        } )
     } );
 }
 

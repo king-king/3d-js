@@ -3,6 +3,10 @@
     -webkit-user-select: none;
 }
 
+.lock {
+    pointer-events: none;
+}
+
 .cube-wrapper {
     width: 600px;
     height: 600px;
