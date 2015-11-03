@@ -36,14 +36,14 @@ function Block( type , row , col ) {
     Drag( el , {
         onTap : function ( e ) {
             e.stopPropagation();
+            return getBlocks( "x" , el.x );
         } ,
         onStart : function ( dx , dy ) {
             // 在这里判断到底是围绕哪个轴旋转
             var col = Axis[ colDir.axis ] , row = Axis[ rowDir.axis ];
             el.currentAxis = Math.abs( col[ 0 ] * dx + col[ 1 ] * dy ) < Math.abs( row[ 0 ] * dx + row[ 1 ] * dy ) ? colDir.axis : rowDir.axis;
-            console.log( el.currentAxis );
             // 先找缓存，如果缓存没有则getBlocks
-            !blocksCache && (blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] = getBlocks( el.currentAxis , el[ el.currentAxis ] ));
+            !blocksCache( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] = getBlocks( el.currentAxis , el[ el.currentAxis ] ) );
         } ,
         onDrag : function ( dx , dy ) {
             var degree = dx * Axis[ el.currentAxis ][ 1 ] - dy * Axis[ el.currentAxis ][ 0 ];

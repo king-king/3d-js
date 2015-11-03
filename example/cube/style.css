@@ -41,29 +41,28 @@ canvas {
     bottom: 2px;
     right: 2px;
     border-radius: 8px;
-    -webkit-backface-visibility: hidden;
 }
 
-.front div {
+.front .block-inner {
     background-color: #2a6496;
 }
 
-.left div {
+.left .block-inner {
     background-color: darkred;
 }
 
-.right div {
+.right .block-inner {
     background-color: yellow;
 }
 
-.back div {
+.back .block-inner {
     background-color: #E87000;
 }
 
-.up div {
+.up .block-inner {
     background-color: #5cb85c;
 }
 
-.bottom div {
+.bottom .block-inner {
     background-color: #FF00FF;
 }
