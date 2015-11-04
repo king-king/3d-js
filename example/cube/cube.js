@@ -134,6 +134,10 @@ function resetPos ( blocks ) {
 }
 
 function initCube () {
+	// 首先3坐标轴要恢复
+	Axis.x = [ 1 , 0 , 0 , 1 ];
+	Axis.y = [ 0 , 1 , 0 , 1 ];
+	Axis.z = [ 0 , 0 , 1 , 1 ];
 	// 如果sixFaces里面有数据，也就是说有dom元素，则只需要重新摆放即可，否则需要生成
 	loopObj( sixFaces , function ( type , face ) {
 		loop( floorNum , function ( row ) {
