@@ -4,7 +4,8 @@
 function Block( type , row , col ) {
     var el = element( "div" , {
         classList : [ "block" , type ] ,
-        innerHTML : "<div class='block-inner'></div>"
+        innerHTML : "<div class='block-inner'></div>" ,
+        type : type
     } , cubeWrapper );
     Blocks.push( el );
     css( el , {
@@ -72,12 +73,11 @@ function Block( type , row , col ) {
                     /**
                      * 1.把位置复原
                      * 2.改变涂色
-                     * */
+                     **/
                         // 1
-                        //resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] );
-                        // 2.todo 这里要进行另外一项复杂的颜色变换
-                    setColor( el.currentAxis , el[ el.currentAxis ] , rotateNum );
-                    console.log( el.currentDegree , toDegree , rotateNum );
+                    resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] );
+                    // 2.todo 这里要进行另外一项复杂的颜色变换
+                    rotateNum % 4 && setColor( el.currentAxis , el[ el.currentAxis ] , rotateNum % 4 );
                 }
             } );
 
@@ -131,7 +131,7 @@ function initCube() {
         loop( floorNum , function ( row ) {
             loop( floorNum , function ( col ) {
                 var el;
-                var index = col * floorNum + row;
+                var index = row * floorNum + col;
                 if ( face.elements[ index ] ) {
                     el = face.elements[ index ];
                     // 恢复颜色
@@ -175,20 +175,49 @@ function rotateCube( t_matrix ) {
 }
 
 // aixs 旋转轴、floorNum旋转的层数、count是90度的倍数
-function setColor( axis , floorNum , count ) {
+function setColor( axis , num , count ) {
     // 根据旋转来染色、4个面和底或顶（如果有的话）开处理
-    // four-face
-    var toRotateData = {
-        faces : [ {} , {} , {} , {} ] ,
-        up : {
-            type : ""
-        } ,
-        bottom : {
-            type : ""
-        }
-    };
-    loop( 4 , function ( i ) {
-
+    var ring = [];
+    var types = [];
+    // 获取环形数据
+    loopObj( rotateData[ axis ].face , function ( type , arg ) {
+        //  这个面的全部元素：sixFaces[type].elements
+        var blocks = arg.rowOrCol == "col" ? getCol( type , arg.posFlag == 1 ? num : floorNum - 1 - num ) : getRow( type , arg.posFlag == 1 ? num : floorNum - 1 - num );
+        arg.colorFlag == -1 && blocks.els.reverse();
+        arg.colorFlag == -1 && blocks.types.reverse();
+        ring[ arg.index ] = blocks.els;
+        types[ arg.index ] = blocks.types;
     } );
+    // todo:这里需要测试一下，不行就取负
+    count < 0 && types.reverse();
+    loop( Math.abs( count ) , function () {
+        types.push( types.shift() );
+    } );
+    loopArray( ring , function ( blocks , i ) {
+        // 换色
+        loopArray( blocks , function ( block , j ) {
+            block.type = types[ i ][ j ];
+            block.className = "block " + block.type;
+        } );
+    } );
+}
 
+function getCol( faceType , colNum ) {
+    var col = { els : [] , types : [] };
+    loop( floorNum , function ( row ) {
+        var block = sixFaces[ faceType ].elements[ row * floorNum + colNum ];
+        col.els.push( block );
+        col.types.push( block.type );
+    } );
+    return col;
+}
+
+function getRow( faceType , rowNum ) {
+    var row = { els : [] , types : [] };
+    loop( floorNum , function ( col ) {
+        var block = sixFaces[ faceType ].elements[ rowNum * floorNum + col ];
+        row.els.push( block );
+        row.types.push( block.type );
+    } );
+    return row;
 }
