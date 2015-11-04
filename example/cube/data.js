@@ -86,19 +86,23 @@ var rotateData = {
         'face' : {
             front : {
                 rowOrCol : "row" ,
-                posFlag : 1
+                posFlag : 1 ,
+                colorFlag : 1
             } ,
             right : {
                 rowOrCol : "row" ,
-                posFlag : 1
+                posFlag : 1 ,
+                colorFlag : 1
             } ,
             back : {
                 rowOrCol : "row" ,
-                posFlag : 1
+                posFlag : 1 ,
+                colorFlag : 1
             } ,
             left : {
                 rowOrCol : "row" ,
-                posFlag : 1
+                posFlag : 1 ,
+                colorFlag : 1
             }
         } ,
         'up' : { 'face' : 'bottom' , 'rotateDegree' : 0 } ,
@@ -108,19 +112,23 @@ var rotateData = {
         'face' : {
             up : {
                 rowOrCol : "col" ,
-                posFlag : 1
+                posFlag : 1 ,
+                colorFlag : -1
             } ,
             back : {
                 rowOrCol : "col" ,
-                posFlag : -1
+                posFlag : -1 ,
+                colorFlag : 1
             } ,
             bottom : {
                 rowOrCol : "col" ,
-                posFlag : 1
+                posFlag : 1 ,
+                colorFlag : -1
             } ,
             front : {
                 rowOrCol : "col" ,
-                posFlag : 1
+                posFlag : 1 ,
+                colorFlag : -1
             }
         } ,
         'up' : { 'face' : 'right' , 'rotateDegree' : 0 } ,
@@ -130,19 +138,23 @@ var rotateData = {
         'face' : {
             up : {
                 rowOrCol : "row" ,
-                posFlag : 1
+                posFlag : 1 ,
+                colorFlag : 1
             } ,
             right : {
                 rowOrCol : "col" ,
-                posFlag : -1
+                posFlag : -1 ,
+                colorFlag : 1
             } ,
             bottom : {
                 rowOrCol : "row" ,
-                posFlag : -1
+                posFlag : -1 ,
+                colorFlag : -1
             } ,
             left : {
                 rowOrCol : "col" ,
-                posFlag : 1
+                posFlag : 1 ,
+                colorFlag : -1
             }
         } ,
         'up' : { 'face' : 'front' , 'rotateDegree' : 0 } ,
