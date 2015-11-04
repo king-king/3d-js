@@ -97,7 +97,7 @@ function rotateFloor ( axis , num , degree , blocks , nacc ) {
 	} );
 }
 
-function rotateFloorAction ( axis , floorNum , fromDegree , rotateNum ) {
+function rotateFloorAction ( axis , floorNum , fromDegree , rotateNum , callback ) {
 	document.body.classList.add( "lock" );
 	var toDegree = rotateNum * 90;
 	frameAnimate( {
@@ -120,6 +120,7 @@ function rotateFloorAction ( axis , floorNum , fromDegree , rotateNum ) {
 			rotateNum % 4 && setColor( axis , floorNum , rotateNum % 4 );
 			// 3
 			checkWin() && alert( "win~!!" );
+			callback && callback();
 		}
 	} );
 }
