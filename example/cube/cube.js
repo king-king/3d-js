@@ -76,9 +76,8 @@ function Block( type , row , col ) {
                         // 1
                         //resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] );
                         // 2.todo 这里要进行另外一项复杂的颜色变换
-                    toColor( el.currentAxis );
+                    setColor( el.currentAxis , el[ el.currentAxis ] , rotateNum );
                     console.log( el.currentDegree , toDegree , rotateNum );
-
                 }
             } );
 
@@ -176,6 +175,20 @@ function rotateCube( t_matrix ) {
 }
 
 // aixs 旋转轴、floorNum旋转的层数、count是90度的倍数
-function toColor( axis , floorNum , count ) {
+function setColor( axis , floorNum , count ) {
+    // 根据旋转来染色、4个面和底或顶（如果有的话）开处理
+    // four-face
+    var toRotateData = {
+        faces : [ {} , {} , {} , {} ] ,
+        up : {
+            type : ""
+        } ,
+        bottom : {
+            type : ""
+        }
+    };
+    loop( 4 , function ( i ) {
+
+    } );
 
 }
