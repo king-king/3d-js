@@ -51,13 +51,20 @@ function Block( type , row , col ) {
             rotateFloor( el.currentAxis , el[ el.currentAxis ] , degree , blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] , true );
         } ,
         onUp : function () {
-            var toDegree = Math.round( el.currentDegree / 90 ) * 90;
+            var toDegree , rotateNum;// rotateNum表示将要旋转的圈数
+            if ( Math.abs( el.currentDegree % 90 ) < 10 ) {
+                // 如果旋转的角度太小，则恢复到原位置，也就是0
+                rotateNum = el.currentDegree < 0 ? Math.ceil( el.currentDegree / 90 ) : Math.floor( el.currentDegree / 90 );
+            } else {
+                rotateNum = el.currentDegree < 0 ? Math.floor( el.currentDegree / 90 ) : Math.ceil( el.currentDegree / 90 );
+            }
+            toDegree = rotateNum * 90;
             console.log( el.currentDegree , toDegree );
             cubeWrapper.classList.add( "lock" );
             frameAnimate( {
                 from : el.currentDegree ,
                 to : toDegree ,
-                duration : 200 ,
+                duration : 100 ,
                 onChange : function ( degree ) {
                     rotateFloor( el.currentAxis , el[ el.currentAxis ] , degree , blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] , true );
                 } ,
