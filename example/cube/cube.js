@@ -51,7 +51,7 @@ function Block( type , row , col ) {
             rotateFloor( el.currentAxis , el[ el.currentAxis ] , degree , blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] , true );
         } ,
         onUp : function () {
-            var toDegree , rotateNum;// rotateNum表示将要旋转的圈数
+            var toDegree , rotateNum;// rotateNum表示将要旋转的90度的倍数
             if ( Math.abs( el.currentDegree % 90 ) < 10 ) {
                 // 如果旋转的角度太小，则恢复到原位置，也就是0
                 rotateNum = el.currentDegree < 0 ? Math.ceil( el.currentDegree / 90 ) : Math.floor( el.currentDegree / 90 );
@@ -59,7 +59,6 @@ function Block( type , row , col ) {
                 rotateNum = el.currentDegree < 0 ? Math.floor( el.currentDegree / 90 ) : Math.ceil( el.currentDegree / 90 );
             }
             toDegree = rotateNum * 90;
-            console.log( el.currentDegree , toDegree );
             cubeWrapper.classList.add( "lock" );
             frameAnimate( {
                 from : el.currentDegree ,
@@ -70,12 +69,20 @@ function Block( type , row , col ) {
                 } ,
                 onEnd : function () {
                     cubeWrapper.classList.remove( "lock" );
-                    // todo 这里要进行另外一项复杂的颜色变换
-                    //  resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] )
+                    /**
+                     * 1.把位置复原
+                     * 2.改变涂色
+                     * */
+                        // 1
+                        //resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] );
+                        // 2.todo 这里要进行另外一项复杂的颜色变换
+                    toColor( el.currentAxis );
+                    console.log( el.currentDegree , toDegree , rotateNum );
+
                 }
             } );
 
-            resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] )
+            //resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] )
         }
     } );
 
@@ -166,4 +173,9 @@ function rotateCube( t_matrix ) {
         block.matrix = _3d.combine( t_matrix , block.matrix );
         block.style.transform = "matrix3d(" + _3d.origin3d( block.matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")";
     } );
+}
+
+// aixs 旋转轴、floorNum旋转的层数、count是90度的倍数
+function toColor( axis , floorNum , count ) {
+
 }
