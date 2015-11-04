@@ -3,6 +3,14 @@
     -webkit-user-select: none;
 }
 
+html, body {
+    height: 100%;
+}
+
+body {
+    background: radial-gradient(#000, #444);
+}
+
 .lock {
     pointer-events: none;
 }
