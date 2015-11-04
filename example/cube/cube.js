@@ -136,6 +136,7 @@ function initCube() {
                     el = face.elements[ index ];
                     // 恢复颜色
                     el.className = "block " + type;
+                    el.type = type;
                 } else {
                     face.elements[ index ] = el = Block( type , row , col );
                 }
@@ -189,7 +190,8 @@ function setColor( axis , num , count ) {
         types[ arg.index ] = blocks.types;
     } );
     // todo:这里需要测试一下，不行就取负
-    count < 0 && types.reverse();
+    //count < 0 && types.reverse();
+    count = (count + 4) % 4;
     loop( Math.abs( count ) , function () {
         types.push( types.shift() );
     } );
@@ -200,6 +202,18 @@ function setColor( axis , num , count ) {
             block.className = "block " + block.type;
         } );
     } );
+
+    // 给顶或底(如果有的话)染色
+    var oneFaceBlocks;
+    var flag = 1;
+    if ( num == 0 ) {
+        oneFaceBlocks = sixFaces[ rotateData[ axis ].bottom.face ].elements;
+    } else if ( num == floorNum - 1 ) {
+        oneFaceBlocks = sixFaces[ rotateData[ axis ].up.face ].elements;
+        flag = -1;
+    }
+    oneFaceBlocks && setOneFaceTypes3_3( oneFaceBlocks , (flag * count + 4) % 4 );
+
 }
 
 function getCol( faceType , colNum ) {
@@ -220,4 +234,20 @@ function getRow( faceType , rowNum ) {
         row.types.push( block.type );
     } );
     return row;
+}
+
+// 得到一个3*3面旋转之后的type数组
+function setOneFaceTypes3_3( Blocks , count ) {
+    // Blocks是一个一维数组，要提取出type并以1维数组返回
+    var posData = rotate3_3Arr[ count ];
+    var types = [];
+    loop( 3 , function ( row ) {
+        loop( 3 , function ( col ) {
+            types[ 3 * row + col ] = Blocks[ 3 * posData[ row ][ col ][ 0 ] + posData[ row ][ col ][ 1 ] ].type;
+        } );
+    } );
+    loopArray( Blocks , function ( block , i ) {
+        block.type = types[ i ];
+        block.className = "block " + types[ i ];
+    } );
 }
