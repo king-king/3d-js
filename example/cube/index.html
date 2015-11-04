@@ -35,6 +35,14 @@
             }
         } );
 
+        // 点击滚轮，自动撤销上次操作
+        document.body.onclick = function ( e ) {
+            if ( e.which == 2 ) {
+                var action = Actions.pop();
+                rotateFloorAction( action.axis , action.floorNum , 0 , -action.rotateNum )
+            }
+        }
+
     })();
 </script>
 </body>

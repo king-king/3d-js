@@ -43,48 +43,26 @@ function Block ( type , row , col ) {
 			// 在这里判断到底是围绕哪个轴旋转
 			var col = Axis[ colDir.axis ] , row = Axis[ rowDir.axis ];
 			el.currentAxis = Math.abs( col[ 0 ] * dx + col[ 1 ] * dy ) < Math.abs( row[ 0 ] * dx + row[ 1 ] * dy ) ? colDir.axis : rowDir.axis;
+			el.currentFloorNum = el[ el.currentAxis ];
 			// 先找缓存，如果缓存没有则getBlocks
-			!blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] && ( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] = getBlocks( el.currentAxis , el[ el.currentAxis ] ) );
+			!blocksCache[ el.currentAxis ][ el.currentFloorNum ] && ( blocksCache[ el.currentAxis ][ el.currentFloorNum ] = getBlocks( el.currentAxis , el[ el.currentAxis ] ) );
 		} ,
 		onDrag : function ( dx , dy , sx , sy ) {
 			var degree = -sx * Axis[ el.currentAxis ][ 1 ] + sy * Axis[ el.currentAxis ][ 0 ];
 			el.currentDegree = degree;
-			rotateFloor( el.currentAxis , el[ el.currentAxis ] , degree , blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] , true );
+			rotateFloor( el.currentAxis , el.currentFloorNum , degree , blocksCache[ el.currentAxis ][ el.currentFloorNum ] , true );
 		} ,
 		onUp : function () {
-			var toDegree , rotateNum;// rotateNum表示将要旋转的90度的倍数
+			var rotateNum;// rotateNum表示将要旋转的90度的倍数
 			if ( Math.abs( el.currentDegree % 90 ) < 10 ) {
 				// 如果旋转的角度太小，则恢复到原位置，也就是0
 				rotateNum = el.currentDegree < 0 ? Math.ceil( el.currentDegree / 90 ) : Math.floor( el.currentDegree / 90 );
 			} else {
 				rotateNum = el.currentDegree < 0 ? Math.floor( el.currentDegree / 90 ) : Math.ceil( el.currentDegree / 90 );
 			}
-			toDegree = rotateNum * 90;
-			cubeWrapper.classList.add( "lock" );
-			frameAnimate( {
-				from : el.currentDegree ,
-				to : toDegree ,
-				duration : 100 ,
-				onChange : function ( degree ) {
-					rotateFloor( el.currentAxis , el[ el.currentAxis ] , degree , blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] , true );
-				} ,
-				onEnd : function () {
-					cubeWrapper.classList.remove( "lock" );
-					/**
-					 * 1.把位置复原
-					 * 2.改变涂色
-					 * 3.检测是否赢了
-					 **/
-						// 1
-					resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] );
-					// 2.todo 这里要进行另外一项复杂的颜色变换
-					rotateNum % 4 && setColor( el.currentAxis , el[ el.currentAxis ] , rotateNum % 4 );
-					// 3
-					checkWin() && alert( "win~!!" )
-				}
-			} );
-
-			//resetPos( blocksCache[ el.currentAxis ][ el[ el.currentAxis ] ] )
+			// rotateNum为0，不记录
+			rotateNum && Actions.push( { axis : el.currentAxis , floorNum : el.currentFloorNum , rotateNum : rotateNum } );
+			rotateFloorAction( el.currentAxis , el.currentFloorNum , el.currentDegree , rotateNum );
 		}
 	} );
 
@@ -116,6 +94,33 @@ function rotateFloor ( axis , num , degree , blocks , nacc ) {
 			"-webkit-transform" : "matrix3d(" +
 			_3d.origin3d( matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")"
 		} );
+	} );
+}
+
+function rotateFloorAction ( axis , floorNum , fromDegree , rotateNum ) {
+	document.body.classList.add( "lock" );
+	var toDegree = rotateNum * 90;
+	frameAnimate( {
+		from : fromDegree ,
+		to : toDegree ,
+		duration : 100 ,
+		onChange : function ( degree ) {
+			rotateFloor( axis , floorNum , degree , blocksCache[ axis ][ floorNum ] , true );
+		} ,
+		onEnd : function () {
+			document.body.classList.remove( "lock" );
+			/**
+			 * 1.把位置复原
+			 * 2.改变涂色
+			 * 3.检测是否赢了
+			 **/
+				// 1
+			resetPos( blocksCache[ axis ][ floorNum ] );
+			// 2.todo 这里要进行另外一项复杂的颜色变换
+			rotateNum % 4 && setColor( axis , floorNum , rotateNum % 4 );
+			// 3
+			checkWin() && alert( "win~!!" );
+		}
 	} );
 }
 
