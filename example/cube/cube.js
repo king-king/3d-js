@@ -62,7 +62,10 @@ function Block ( type , row , col ) {
 			}
 			// rotateNum为0，不记录
 			rotateNum && Actions.push( { axis : el.currentAxis , floorNum : el.currentFloorNum , rotateNum : rotateNum } );
-			rotateFloorAction( el.currentAxis , el.currentFloorNum , el.currentDegree , rotateNum );
+			document.body.classList.add( "lock" );
+			rotateFloorAction( el.currentAxis , el.currentFloorNum , el.currentDegree , rotateNum , function () {
+				document.body.classList.remove( "lock" );
+			} );
 		}
 	} );
 
@@ -98,7 +101,6 @@ function rotateFloor ( axis , num , degree , blocks , nacc ) {
 }
 
 function rotateFloorAction ( axis , floorNum , fromDegree , rotateNum , callback ) {
-	document.body.classList.add( "lock" );
 	var toDegree = rotateNum * 90;
 	frameAnimate( {
 		from : fromDegree ,
@@ -108,7 +110,6 @@ function rotateFloorAction ( axis , floorNum , fromDegree , rotateNum , callback
 			rotateFloor( axis , floorNum , degree , blocksCache[ axis ][ floorNum ] , true );
 		} ,
 		onEnd : function () {
-			document.body.classList.remove( "lock" );
 			/**
 			 * 1.把位置复原
 			 * 2.改变涂色
