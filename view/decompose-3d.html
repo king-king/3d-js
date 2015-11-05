@@ -12,7 +12,7 @@
             height: 100px;
             opacity: 0.5;
             background: green;
-            -webkit-transform: translate3d(100px, 100px, 0) rotate3d(1, 1, 0, 30deg) scale(1.3);
+            /*-webkit-transform: translate3d(100px, 100px, 0) rotate3d(1, 1, 0, 30deg) scale(1.3);*/
             /*-webkit-transform-origin: 0 0;*/
         }
 
@@ -24,7 +24,7 @@
             height: 100px;
             opacity: 0.5;
             background: black;
-            -webkit-transform: translate3d(100px, 100px, 0) rotate3d(1, 1, 0, 30deg) scale(1.3);
+            -webkit-transform: translate3d(100px, 100px, 0) rotate3d(0, 1, 0, 45deg);
             /*-webkit-transform-origin: 0 0;*/
         }
 
@@ -37,13 +37,28 @@
             border-radius: 6px;
             background: black;
         }
+
+        .p.p2 {
+            background: #f00;
+        }
+
+        .border {
+            width: 600px;
+            height: 600px;
+            border: 1px solid black;
+            perspective: 1500px;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
     </style>
 </head>
 <body>
-<div class="a"></div>
-<div class="b"></div>
-<div class="p"></div>
-<div class="p p2"></div>
+<div class="border">
+    <div class="a"></div>
+    <div class="b"></div>
+    <div class="p"></div>
+    <div class="p p2"></div>
+</div>
 <script src="../lib/basic.js"></script>
 <script src="../lib/3d-css.js"></script>
 <script>
@@ -58,20 +73,26 @@
 
         // dom
         var querySelector = document.querySelector.bind( document ) ,
+                a = querySelector( ".a" ) ,
                 b = querySelector( ".b" ) ,
                 p2 = querySelector( ".p2" ) ,
                 p = querySelector( ".p" );
 
 
-        var matrix = combine( translate3d( 100 , 100 , 0 ) , rotate3d( 1 , 1 , 0 , 30 ) , scale3d( 1.3 , 1.3 , 1.3 ) );
-        matrix = origin3d( matrix , 50 , 50 , 0 );
-        var v = decompose3d( matrix , [ 0 , 0 , 0 , 1 ] );
+        var matrix = combine( translate3d( 100 , 100 , 0 ) , rotate3d( 0 , 1 , 0 , -45 ) );
+        var t_matrix = origin3d( matrix , 0 , 0 , 0 );
+        var p_matrix = origin3d( matrix , 50 , 50 , 0 );
+        var v = decompose3d( p_matrix , [ 0 , 0 , 0 , 1 ] );
+        a.css( {
+            "-webkit-transform" : "matrix3d(" + t_matrix.matrixStringify() + ")"
+        } );
+
         p.css( {
-            "-webkit-transform" : "translate3d(" + (v[ 0 ] - 3) + "px," + (v[ 1 ] - 3) + "px," + v[ 2 ] + "px)"
+            "-webkit-transform" : "  translate3d(" + (v[ 0 ] - 3) + "px," + (v[ 1 ] - 3) + "px," + v[ 2 ] + "px)"
         } );
 
         p2.css( {
-            "-webkit-transform" : "translate3d(" + (v[ 0 ] - 3) + "px," + (v[ 1 ] - 3) + "px,0px)"
+            "-webkit-transform" : "  translate3d(" + (v[ 0 ] - 3) + "px," + (v[ 1 ] - 3) + "px,0px)"
         } );
 
     })();
