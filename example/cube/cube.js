@@ -115,12 +115,13 @@ function rotateFloor( axis , num , degree , blocks , nacc ) {
 
 }
 
-function rotateFloorAction( axis , floorNum , fromDegree , rotateNum , callback ) {
+function rotateFloorAction( axis , floorNum , fromDegree , rotateNum , callback , duration ) {
+    !blocksCache[ axis ][ floorNum ] && ( blocksCache[ axis ][ floorNum ] = getBlocks( axis , floorNum ) );
     var toDegree = rotateNum * 90;
     frameAnimate( {
         from : fromDegree ,
         to : toDegree ,
-        duration : 100 ,
+        duration : duration || 100 ,
         onChange : function ( degree ) {
             rotateFloor( axis , floorNum , degree , blocksCache[ axis ][ floorNum ] , true );
         } ,

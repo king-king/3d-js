@@ -24,20 +24,32 @@
 
         initCube();
 
-        var point = {
-            pos : [ 0 , 0 , 0 , 1 ] ,
-            origin : [ 150 , 150 , -150 ]
-        };
-        point.matrix = _3d.eye();
-        gc.fillStyle = "red";
+        rotateCube( _3d.rotate3dM( 1 , -1 , 0 , 45 ) );
 
-        function drawPoint( matrix ) {
-            gc.clearRect( 0 , 0 , 600 , 600 );
-            point.matrix = _3d.combine( matrix , point.matrix );
-            var real = _3d.origin3d( point.matrix , point.origin[ 0 ] , point.origin[ 1 ] , point.origin[ 2 ] );
-            point.pos = _3d.decompose3d( real , [ 0 , 0 , 0 , 1 ] );
-            gc.fillRect( 147 + point.pos[ 0 ] , 147 + point.pos[ 1 ] , 6 , 6 );
+        // 随机旋转10次
+        var randomAction = new Array( 10 );
+        var axis = [ "x" , "y" , "z" ] , floorNums = [ 0 , 1 , 2 ];
+
+        function randomGet( arr ) {
+            return arr[ (( Math.random() * 100) << 0) % arr.length ];
         }
+
+        loopArray( randomAction , function ( action , i ) {
+            randomAction[ i ] = function ( done ) {
+                rotateFloorAction( randomGet( axis ) , randomGet( floorNums ) , 0 , 1 , function ( iswin ) {
+                    if ( iswin && i != randomAction.length - 1 ) {
+                        document.body.classList.remove( "lock" );
+                        var winBorder = querySelector( ".win-board" );
+                        winBorder && winBorder.parentNode && winBorder.parentNode.removeChild( winBorder );
+                    }
+                    done();
+                } , 300 );
+            }
+        } );
+
+        serialTask( randomAction , function () {
+//            alert( "开始" )
+        } );
 
         Drag( cubeWrapper , {
             onDrag : function ( dx , dy ) {
@@ -45,7 +57,6 @@
                     var s = ( Math.abs( dx ) + Math.abs( dy )) / 3.5;
                     var t_matrix = _3d.rotate3dM( dy , -dx , 0 , s );
                     rotateCube( t_matrix );
-//                    drawPoint( t_matrix )
                 }
             }
         } );
