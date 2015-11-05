@@ -94,14 +94,25 @@ function getBlocks( axis , num ) {
 function rotateFloor( axis , num , degree , blocks , nacc ) {
     // nacc为true的时候表示不需要累加
     !blocks && (blocks = getBlocks( axis , num ) );
+    var t_matrix = _3d.rotate3dM( Axis[ axis ][ 0 ] , Axis[ axis ][ 1 ] , Axis[ axis ][ 2 ] , degree );
     loopArray( blocks , function ( block ) {
-        var matrix = _3d.combine( _3d.rotate3dM( Axis[ axis ][ 0 ] , Axis[ axis ][ 1 ] , Axis[ axis ][ 2 ] , degree ) , block.matrix );
+        var matrix = _3d.combine( t_matrix , block.matrix );
         !nacc && (block.matrix = matrix);
         css( block , {
             "-webkit-transform" : "matrix3d(" +
             _3d.origin3d( matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")"
         } );
     } );
+    // 旋转黑板
+    loopArray( blackBoard[ axis ][ num ] , function ( board ) {
+        var matrix = _3d.combine( t_matrix , board.element.matrix );
+        !nacc && (board.element.matrix = matrix);
+        css( board.element , {
+            "-webkit-transform" : "matrix3d(" +
+            _3d.origin3d( matrix , board.origin[ 0 ] , board.origin[ 1 ] , board.origin[ 2 ] ).matrixStringify() + ")"
+        } );
+    } );
+
 }
 
 function rotateFloorAction( axis , floorNum , fromDegree , rotateNum , callback ) {
@@ -120,7 +131,7 @@ function rotateFloorAction( axis , floorNum , fromDegree , rotateNum , callback 
              * 3.检测是否赢了
              **/
                 // 1
-            resetPos( blocksCache[ axis ][ floorNum ] );
+            resetPos( blocksCache[ axis ][ floorNum ] , axis , floorNum );
             // 2.todo 这里要进行另外一项复杂的颜色变换
             rotateNum % 4 && setColor( axis , floorNum , rotateNum % 4 );
             // 3 判断是否成功，成功会自动弹出提示
@@ -129,7 +140,14 @@ function rotateFloorAction( axis , floorNum , fromDegree , rotateNum , callback 
     } );
 }
 
-function resetPos( blocks ) {
+function resetPos( blocks , axis , floorNum ) {
+    // 根据 axis , floorNum寻找blackboard
+    loopArray( blackBoard[ axis ][ floorNum ] , function ( board ) {
+        css( board.element , {
+            "-webkit-transform" : "matrix3d(" +
+            _3d.origin3d( board.element.matrix , board.origin[ 0 ] , board.origin[ 1 ] , board.origin[ 2 ] ).matrixStringify() + ")"
+        } )
+    } );
     loopArray( blocks , function ( block ) {
         css( block , {
             "-webkit-transform" : "matrix3d(" +
@@ -166,6 +184,22 @@ function initCube() {
             } );
         } )
     } );
+
+    // 做黑板
+    loopObj( blackBoard , function ( axis , allBoards ) {
+        loopObj( allBoards , function ( floorNum , boards ) {
+            loopArray( boards , function ( board , i ) {
+                if ( !board.element ) {
+                    board.element = element( "div" , { classList : [ "blackboard" , axis + "-" + floorNum ] } , cubeWrapper );
+                }
+                board.element.matrix = board.transform;
+                css( board.element , {
+                    "-webkit-transform" : "matrix3d(" +
+                    _3d.origin3d( board.element.matrix , board.origin[ 0 ] , board.origin[ 1 ] , board.origin[ 2 ] ).matrixStringify() + ")"
+                } );
+            } );
+        } )
+    } );
 }
 
 function drawAxis() {
@@ -189,6 +223,15 @@ function rotateCube( t_matrix ) {
     loopArray( Blocks , function ( block ) {
         block.matrix = _3d.combine( t_matrix , block.matrix );
         block.style.transform = "matrix3d(" + _3d.origin3d( block.matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")";
+    } );
+    // 旋转黑板
+    loopObj( blackBoard , function ( axis , all ) {
+        loopObj( all , function ( floorNum , boards ) {
+            loopArray( boards , function ( board ) {
+                board.element.matrix = _3d.combine( t_matrix , board.element.matrix );
+                board.element.style.transform = "matrix3d(" + _3d.origin3d( board.element.matrix , board.origin[ 0 ] , board.origin[ 1 ] , board.origin[ 2 ] ).matrixStringify() + ")";
+            } );
+        } );
     } );
 }
 

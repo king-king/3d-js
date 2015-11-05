@@ -51,6 +51,17 @@ canvas {
     -webkit-transform: translate3d(-50%, -50%, 0);
 }
 
+.blackboard {
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background: #000;
+    margin-top: -150px;
+    margin-left: -150px;
+}
+
 .block {
     width: 100px;
     height: 100px;
@@ -58,7 +69,6 @@ canvas {
     left: 50%;
     top: 50%;
     background: #000;
-    opacity: 0.3;
 }
 
 .block-inner {
