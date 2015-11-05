@@ -108,3 +108,20 @@ function serialTask( tasks , callback ) {
         ++index == tasks.length ? callback() : tasks[ index ]( arguments.callee );
     } );
 }
+
+function requestAnimate( keyframe ) {
+    var id;
+
+    function f() {
+        keyframe();
+        clearTimeout( id );
+        id = setTimeout( arguments.callee , 20 );
+    }
+
+    f();
+    return {
+        destroy : function () {
+            clearTimeout( id );
+        }
+    }
+}

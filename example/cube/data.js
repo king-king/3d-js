@@ -12,6 +12,8 @@ var querySelector = document.querySelector.bind( document );
 var cubeWrapper = querySelector( ".cube-wrapper" );
 var canvas = document.querySelector( "canvas" );
 var gc = canvas.getContext( "2d" );
+var head = querySelector( ".head" );
+
 gc.lineWidth = 5;
 gc.strokeStyle = "black";
 

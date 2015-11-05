@@ -66,6 +66,7 @@ function Block( type , row , col ) {
                 floorNum : el.currentFloorNum ,
                 rotateNum : rotateNum
             } );
+            head.innerText = Actions.length;
             document.body.classList.add( "lock" );
             rotateFloorAction( el.currentAxis , el.currentFloorNum , el.currentDegree , rotateNum , function ( isWin ) {
                 !isWin && document.body.classList.remove( "lock" );

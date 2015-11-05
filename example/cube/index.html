@@ -7,8 +7,10 @@
     <link rel="icon" type="image/png" href="ico.png">
 </head>
 <body>
+<div class="head">0</div>
 <canvas width="600" height="600"></canvas>
 <div class="cube-wrapper"></div>
+<div class="start-btn">Start</div>
 <script src="../../lib/3d-css.js"></script>
 <script src="data.js"></script>
 <script src="tools.js"></script>
@@ -24,11 +26,11 @@
 
         initCube();
 
-        rotateCube( _3d.rotate3dM( 1 , -1 , 0 , 45 ) );
 
         // 随机旋转10次
         var randomAction = new Array( 10 );
         var axis = [ "x" , "y" , "z" ] , floorNums = [ 0 , 1 , 2 ];
+        var isEasy = location.hash == "#easy";
 
         function randomGet( arr ) {
             return arr[ (( Math.random() * 100) << 0) % arr.length ];
@@ -36,20 +38,39 @@
 
         loopArray( randomAction , function ( action , i ) {
             randomAction[ i ] = function ( done ) {
-                rotateFloorAction( randomGet( axis ) , randomGet( floorNums ) , 0 , 1 , function ( iswin ) {
+                var ax = randomGet( axis ) ,
+                        floorNum = randomGet( floorNums );
+                isEasy && Actions.push( {
+                    axis : ax ,
+                    floorNum : floorNum ,
+                    rotateNum : 1
+                } );
+                isEasy && (head.innerText = Actions.length);
+
+                rotateFloorAction( ax , floorNum , 0 , 1 , function ( iswin ) {
                     if ( iswin && i != randomAction.length - 1 ) {
                         document.body.classList.remove( "lock" );
                         var winBorder = querySelector( ".win-board" );
                         winBorder && winBorder.parentNode && winBorder.parentNode.removeChild( winBorder );
                     }
                     done();
-                } , 300 );
+                } , 400 );
             }
         } );
 
-        serialTask( randomAction , function () {
-//            alert( "开始" )
+        var animate = requestAnimate( function () {
+            rotateCube( _3d.rotate3dM( 1 , -1 , 0 , 1 ) )
         } );
+
+        var startBtn = querySelector( ".start-btn" );
+        startBtn.onclick = function () {
+            animate.destroy();
+            startBtn.parentNode.removeChild( startBtn );
+            document.body.classList.add( "lock" );
+            serialTask( randomAction , function () {
+                document.body.classList.remove( "lock" );
+            } );
+        };
 
         Drag( cubeWrapper , {
             onDrag : function ( dx , dy ) {
@@ -65,7 +86,9 @@
         document.body.onclick = function ( e ) {
             if ( e.which == 2 ) {
                 var action = Actions.pop();
-                action && rotateFloorAction( action.axis , action.floorNum , 0 , -action.rotateNum )
+                head.innerText = Actions.length;
+                action && rotateFloorAction( action.axis , action.floorNum , 0 , -action.rotateNum , function () {
+                } );
             }
         }
 
