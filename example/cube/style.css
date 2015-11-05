@@ -8,7 +8,7 @@ html, body {
 }
 
 body {
-    background: radial-gradient(#000, #444);
+    /*background: radial-gradient(#000, #444);*/
 }
 
 .lock {
@@ -58,6 +58,7 @@ canvas {
     left: 50%;
     top: 50%;
     background: #000;
+    opacity: 0.3;
 }
 
 .block-inner {
