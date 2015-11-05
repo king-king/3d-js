@@ -1,6 +1,9 @@
 /**
  * Created by WQ on 2015/11/2.
  */
+// 开关
+var blackBoardon = false;
+
 
 // api
 var querySelector = document.querySelector.bind( document );
@@ -83,90 +86,91 @@ var sixFaces = {
 };
 
 var blackBoard = {
-    x : {
-        0 : [
-            {
-                origin : [ 0 , 0 , -50 ] ,
-                transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 0 , 1 , 0 , -90 ) );
-                })()
-            }
-        ] ,
-        1 : [
-            {
-                origin : [ 0 , 0 , -50 ] ,
-                transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 0 , 1 , 0 , -90 ) );
-                })()
-            } ,
-            {
-                origin : [ 0 , 0 , -50 ] ,
-                transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 0 , 1 , 0 , -270 ) );
-                })()
-            }
-        ] ,
-        2 : [
-            {
-                origin : [ 0 , 0 , -50 ] ,
-                transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 0 , 1 , 0 , -270 ) );
-                })()
-            }
-        ]
-    } ,
-    y : {
-        0 : [
-            {
-                origin : [ 0 , 0 , -50 ] ,
-                transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 1 , 0 , 0 , -90 ) );
-                })()
-            }
-        ] ,
-        1 : [
-            {
-                origin : [ 0 , 0 , -50 ] ,
-                transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 1 , 0 , 0 , -90 ) );
-                })()
-            } ,
-            {
-                origin : [ 0 , 0 , -50 ] ,
-                transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 1 , 0 , 0 , -270 ) );
-                })()
-            }
-        ] ,
-        2 : [
-            {
-                origin : [ 0 , 0 , -50 ] ,
-                transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 1 , 0 , 0 , -270 ) );
-                })()
-            }
-        ]
-    } ,
+    //x : {
+    //    0 : [
+    //        {
+    //            origin : [ 0 , 0 , -50 ] ,
+    //            transform : (function () {
+    //                return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 0 , 1 , 0 , -90 ) );
+    //            })()
+    //        }
+    //    ] ,
+    //    1 : [
+    //        {
+    //            origin : [ 0 , 0 , -50 ] ,
+    //            transform : (function () {
+    //                return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 0 , 1 , 0 , -90 ) );
+    //            })()
+    //        } ,
+    //        {
+    //            origin : [ 0 , 0 , -50 ] ,
+    //            transform : (function () {
+    //                return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 0 , 1 , 0 , -270 ) );
+    //            })()
+    //        }
+    //    ] ,
+    //    2 : [
+    //        {
+    //            origin : [ 0 , 0 , -50 ] ,
+    //            transform : (function () {
+    //                return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 0 , 1 , 0 , -270 ) );
+    //            })()
+    //        }
+    //    ]
+    //} ,
+    //y : {
+    //    0 : [
+    //        {
+    //            origin : [ 0 , 0 , -50 ] ,
+    //            transform : (function () {
+    //                return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 1 , 0 , 0 , -90 ) );
+    //            })()
+    //        }
+    //    ] ,
+    //    1 : [
+    //        {
+    //            origin : [ 0 , 0 , -50 ] ,
+    //            transform : (function () {
+    //                return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 1 , 0 , 0 , -90 ) );
+    //            })()
+    //        } ,
+    //        {
+    //            origin : [ 0 , 0 , -50 ] ,
+    //            transform : (function () {
+    //                return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 1 , 0 , 0 , -270 ) );
+    //            })()
+    //        }
+    //    ] ,
+    //    2 : [
+    //        {
+    //            origin : [ 0 , 0 , -50 ] ,
+    //            transform : (function () {
+    //                return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 1 , 0 , 0 , -270 ) );
+    //            })()
+    //        }
+    //    ]
+    //}
+    //,
     z : {
         0 : [
             {
                 origin : [ 0 , 0 , -50 ] ,
                 transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 1 , 0 , 0 , -180 ) );
+                    return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 1 , 0 , 0 , -180 ) );
                 })()
             }
         ] ,
         1 : [
             {
-                origin : [ 0 , 0 , -50 ] ,
+                origin : [ 0 , 0 , -100 ] ,
                 transform : (function () {
-                    return _3d.combine( _3d.translate3dM( 0 , 0 , -100 ) , _3d.rotate3dM( 1 , 0 , 0 , -180 ) );
+                    return _3d.combine( _3d.translate3dM( 0 , 0 , 0 ) , _3d.rotate3dM( 1 , 0 , 0 , -180 ) );
                 })()
             } ,
             {
                 origin : [ 0 , 0 , -50 ] ,
                 transform : (function () {
-                    return _3d.translate3dM( 0 , 0 , -100 );
+                    return _3d.translate3dM( 0 , 0 , 0 );
                 })()
             }
         ] ,
@@ -174,7 +178,7 @@ var blackBoard = {
             {
                 origin : [ 0 , 0 , -50 ] ,
                 transform : (function () {
-                    return _3d.translate3dM( 0 , 0 , -100 );
+                    return _3d.translate3dM( 0 , 0 , 0 );
                 })()
             }
         ]

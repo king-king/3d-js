@@ -104,7 +104,7 @@ function rotateFloor( axis , num , degree , blocks , nacc ) {
         } );
     } );
     // 旋转黑板
-    loopArray( blackBoard[ axis ][ num ] , function ( board ) {
+    blackBoardon && loopArray( blackBoard[ axis ][ num ] , function ( board ) {
         var matrix = _3d.combine( t_matrix , board.element.matrix );
         !nacc && (board.element.matrix = matrix);
         css( board.element , {
@@ -142,7 +142,7 @@ function rotateFloorAction( axis , floorNum , fromDegree , rotateNum , callback 
 
 function resetPos( blocks , axis , floorNum ) {
     // 根据 axis , floorNum寻找blackboard
-    loopArray( blackBoard[ axis ][ floorNum ] , function ( board ) {
+    blackBoardon && loopArray( blackBoard[ axis ][ floorNum ] , function ( board ) {
         css( board.element , {
             "-webkit-transform" : "matrix3d(" +
             _3d.origin3d( board.element.matrix , board.origin[ 0 ] , board.origin[ 1 ] , board.origin[ 2 ] ).matrixStringify() + ")"
@@ -186,7 +186,7 @@ function initCube() {
     } );
 
     // 做黑板
-    loopObj( blackBoard , function ( axis , allBoards ) {
+    blackBoardon && loopObj( blackBoard , function ( axis , allBoards ) {
         loopObj( allBoards , function ( floorNum , boards ) {
             loopArray( boards , function ( board , i ) {
                 if ( !board.element ) {
@@ -225,7 +225,7 @@ function rotateCube( t_matrix ) {
         block.style.transform = "matrix3d(" + _3d.origin3d( block.matrix , block.origin[ 0 ] , block.origin[ 1 ] , block.origin[ 2 ] ).matrixStringify() + ")";
     } );
     // 旋转黑板
-    loopObj( blackBoard , function ( axis , all ) {
+    blackBoardon && loopObj( blackBoard , function ( axis , all ) {
         loopObj( all , function ( floorNum , boards ) {
             loopArray( boards , function ( board ) {
                 board.element.matrix = _3d.combine( t_matrix , board.element.matrix );
