@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        div {
+            width: 200px;
+            height: 200px;
+            opacity: 0.4;
+            position: absolute;
+        }
+
+        .a {
+            background: #000;
+            -webkit-transform: translate3d(100px, 100px, 0) translate3d(100px, 100px, 0) rotateZ(40deg);
+        }
+
+        .b {
+            background: #f00;
+        }
+    </style>
+</head>
+<body>
+<div class="a"></div>
+<div class="b"></div>
+<script src="../lib/3d-css.js"></script>
+<script>
+    var matrix = _3d.combine( _3d.translate3dM( 100 , 100 , 0 ) , _3d.translate3dM( 100 , 100 , 0 ) , _3d.rotate3dM( 0 , 0 , 1 , -40 ) );
+    document.querySelector( ".b" ).style.webkitTransform = "matrix3d(" + matrix.matrixStringify() + ")"
+</script>
+</body>
+</html>

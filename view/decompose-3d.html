@@ -46,9 +46,9 @@
             width: 600px;
             height: 600px;
             border: 1px solid black;
-            perspective: 1500px;
-            -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
+            /*perspective: 1500px;*/
+            /*-webkit-transform-style: preserve-3d;*/
+            /*transform-style: preserve-3d;*/
         }
     </style>
 </head>
@@ -80,20 +80,20 @@
 
 
         var matrix = combine( translate3d( 100 , 100 , 0 ) , rotate3d( 0 , 1 , 0 , -45 ) );
-        var t_matrix = origin3d( matrix , 0 , 0 , 0 );
-        var p_matrix = origin3d( matrix , 50 , 50 , 0 );
-        var v = decompose3d( p_matrix , [ 0 , 0 , 0 , 1 ] );
+//        var t_matrix = origin3d( matrix , 0 , 0 , 0 );
+//        var p_matrix = origin3d( matrix , 50 , 50 , 0 );
+//        var v = decompose3d( p_matrix , [ 0 , 0 , 0 , 1 ] );
         a.css( {
-            "-webkit-transform" : "matrix3d(" + t_matrix.matrixStringify() + ")"
+            "-webkit-transform" : "matrix3d(" + matrix.matrixStringify() + ")"
         } );
 
-        p.css( {
-            "-webkit-transform" : "  translate3d(" + (v[ 0 ] - 3) + "px," + (v[ 1 ] - 3) + "px," + v[ 2 ] + "px)"
-        } );
-
-        p2.css( {
-            "-webkit-transform" : "  translate3d(" + (v[ 0 ] - 3) + "px," + (v[ 1 ] - 3) + "px,0px)"
-        } );
+//        p.css( {
+//            "-webkit-transform" : "  translate3d(" + (v[ 0 ] - 3) + "px," + (v[ 1 ] - 3) + "px," + v[ 2 ] + "px)"
+//        } );
+//
+//        p2.css( {
+//            "-webkit-transform" : "  translate3d(" + (v[ 0 ] - 3) + "px," + (v[ 1 ] - 3) + "px,0px)"
+//        } );
 
     })();
 </script>

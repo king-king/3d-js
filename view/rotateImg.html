@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        img {
+            width: 300px;
+            position: absolute;
+        }
+
+        img.a {
+            left: 10px;
+            top: 10px;
+            -webkit-transform: matrix(-1, 0, 0, 1, 0, 0);
+        }
+
+        img.b {
+            left: 310px;
+            top: 10px;
+            -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+        }
+
+        img.c {
+            left: 10px;
+            top: 310px;
+            -webkit-transform: matrix(-1, 0, 0, -1, 0, 0);
+        }
+
+        img.d {
+            left: 310px;
+            top: 310px;
+            -webkit-transform: matrix(1, 0, 0, -1, 0, 0);
+        }
+    </style>
+</head>
+<body>
+<img src="img/person.jpg" class="a"><img src="img/person.jpg" class="b">
+
+<img src="img/person.jpg" class="c"><img src="img/person.jpg" class="d">
+
+</body>
+</html>
